@@ -128,6 +128,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-u", "--update", action='store_true', help="Updates all Gyms and Stops using Portal info")
+    parser.add_argument("-g", "--gyms", action='store_true', help="Updates all Gyms using Portal info")
+    parser.add_argument("-p", "--pokestops", action='store_true', help="Updates all Pokestops using Portal info")
     parser.add_argument("-c", "--config", default="config.ini", help="Config file to use")
     parser.add_argument("-w", "--workers", default=0, help="Workers")
     parser.add_argument("-d", "--debug", action='store_true', help="Run the script in debug mode")
@@ -195,6 +197,20 @@ if __name__ == "__main__":
         gyms = queries.get_empty_gyms()
         stops = queries.get_empty_stops()
         update_wp("Gym", gyms)
+        update_wp("Stop", stops)
+        queries.close()
+        sys.exit()
+
+    if args.gyms:
+        queries = Queries(config)
+        gyms = queries.get_empty_gyms()
+        update_wp("Gym", gyms)
+        queries.close()
+        sys.exit()
+
+    if args.pokestops:
+        queries = Queries(config)
+        stops = queries.get_empty_stops()
         update_wp("Stop", stops)
         queries.close()
         sys.exit()
