@@ -34,7 +34,7 @@ def update_wp(wp_type, points, batch_size):
                 error = 0
             except Exception as e:
                 log.error(f"Could not update {wp_type} {wp[0]}")
-                log.exception(e)
+#                log.exception(e)
                 error += 1
         else:
             log.info(f"Couldn't get Portal info for {wp_type} {wp[0]}")
