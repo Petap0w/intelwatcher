@@ -18,18 +18,24 @@ from intelwatcher.stopwatch import Stopwatch
 
 def update_wp(wp_type, points, batch_size):
     updated = 0
+    error = 0
     log.info(f"Found {len(points)} {wp_type}s")
     for wp in points:
         portal_details = scraper.get_portal_details(wp[0])
+        if error = 5:
+            log.error(f"5 errors in a row - probably rate limited - exiting")
+            break
         if portal_details is not None:
             try:
                 pname = maybe_byte(portal_details.get("result")[portal_name])
                 queries.update_point(wp_type, pname, maybe_byte(portal_details.get("result")[portal_url]), wp[0])
                 updated += 1
                 log.info(f"Updated {wp_type} {pname}")
+                error = 0
             except Exception as e:
                 log.error(f"Could not update {wp_type} {wp[0]}")
                 log.exception(e)
+                error += 1
         else:
             log.info(f"Couldn't get Portal info for {wp_type} {wp[0]}")
         if updated >= batch_size:
