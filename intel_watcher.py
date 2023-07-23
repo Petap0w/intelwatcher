@@ -22,7 +22,7 @@ def update_wp(wp_type, points, batch_size):
     log.info(f"Found {len(points)} {wp_type}s")
     for wp in points:
         portal_details = scraper.get_portal_details(wp[0])
-        if error = 5:
+        if error == 5:
             log.error(f"5 errors in a row - probably rate limited - exiting")
             break
         if portal_details is not None:
