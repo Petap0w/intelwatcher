@@ -16,7 +16,7 @@ from intelwatcher.get_cookie import mechanize_cookie, selenium_cookie
 from intelwatcher.stopwatch import Stopwatch
 
 
-def update_wp(wp_type, points):
+def update_wp(wp_type, points, batch_size):
     updated = 0
     log.info(f"Found {len(points)} {wp_type}s")
     for wp in points:
@@ -32,7 +32,8 @@ def update_wp(wp_type, points):
                 log.exception(e)
         else:
             log.info(f"Couldn't get Portal info for {wp_type} {wp[0]}")
-            
+        if updated > batch_size:
+            break
     log.info(f"Updated {updated} {wp_type}s")
     log.info("")
 
@@ -132,6 +133,7 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pokestops", action='store_true', help="Updates all Pokestops using Portal info")
     parser.add_argument("-c", "--config", default="config.ini", help="Config file to use")
     parser.add_argument("-w", "--workers", default=0, help="Workers")
+    parser.add_argument("-s", "--size", default=500, help="Size of batch")
     parser.add_argument("-d", "--debug", action='store_true', help="Run the script in debug mode")
     parser.add_argument("-t", "--tiles", default=15, help="How many tiles to scrape per worker")
     args = parser.parse_args()
@@ -196,22 +198,22 @@ if __name__ == "__main__":
         queries = Queries(config)
         gyms = queries.get_empty_gyms()
         stops = queries.get_empty_stops()
-        update_wp("Gym", gyms)
-        update_wp("Stop", stops)
+        update_wp("Gym", gyms, args.size)
+        update_wp("Stop", stops, args.size)
         queries.close()
         sys.exit()
 
     if args.gyms:
         queries = Queries(config)
         gyms = queries.get_empty_gyms()
-        update_wp("Gym", gyms)
+        update_wp("Gym", gyms, args.size)
         queries.close()
         sys.exit()
 
     if args.pokestops:
         queries = Queries(config)
         stops = queries.get_empty_stops()
-        update_wp("Stop", stops)
+        update_wp("Stop", stops, args.size)
         queries.close()
         sys.exit()
 
