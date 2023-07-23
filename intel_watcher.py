@@ -38,6 +38,7 @@ def update_wp(wp_type, points, batch_size):
                 error += 1
         else:
             log.info(f"Couldn't get Portal info for {wp_type} {wp[0]}")
+            error = 0
         if updated >= batch_size:
             break
     log.info(f"Updated {updated} {wp_type}s")
