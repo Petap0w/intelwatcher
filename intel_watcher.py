@@ -198,22 +198,22 @@ if __name__ == "__main__":
         queries = Queries(config)
         gyms = queries.get_empty_gyms()
         stops = queries.get_empty_stops()
-        update_wp("Gym", gyms, args.size)
-        update_wp("Stop", stops, args.size)
+        update_wp("Gym", gyms, int(args.size))
+        update_wp("Stop", stops, int(args.size))
         queries.close()
         sys.exit()
 
     if args.gyms:
         queries = Queries(config)
         gyms = queries.get_empty_gyms()
-        update_wp("Gym", gyms, args.size)
+        update_wp("Gym", gyms, int(args.size))
         queries.close()
         sys.exit()
 
     if args.pokestops:
         queries = Queries(config)
         stops = queries.get_empty_stops()
-        update_wp("Stop", stops, args.size)
+        update_wp("Stop", stops, int(args.size))
         queries.close()
         sys.exit()
 
